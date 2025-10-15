@@ -1,59 +1,40 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Outer Realms</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Outer Realms — Gallery</title>
+  <link href="style.css" rel="stylesheet">
+  <!-- Using Google Fonts for a medieval vibe (requires internet when viewing) -->
+  <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:ital@0;1&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header>
+  <header class="site-header">
     <h1>Outer Realms</h1>
-    <p class="subtitle">A custom Magic: The Gathering set</p>
-
-    <nav>
-      <button class="filter-button" data-filter="all">All</button>
-      <button class="filter-button" data-filter="white">White</button>
-      <button class="filter-button" data-filter="blue">Blue</button>
-      <button class="filter-button" data-filter="black">Black</button>
-      <button class="filter-button" data-filter="red">Red</button>
-      <button class="filter-button" data-filter="green">Green</button>
-      <button class="filter-button" data-filter="multicolor">Multicolor</button>
-      <button class="filter-button" data-filter="artifact">Artifact</button>
-      <button class="filter-button" data-filter="nonbasic-land">Non-Basic Land</button>
-      <button class="filter-button" data-filter="basic-land">Basic Land</button>
-    </nav>
+    <p class="subtitle">A gallery of custom cards — filter by color or type</p>
   </header>
 
-  <main>
-    <div class="cards-grid">
-      <!-- Example card (replace or duplicate as needed) -->
-      <div class="card" data-color="red">
-        <img src="cards/flame_birth.jpg" alt="Flame Birth">
-        <p>Flame Birth</p>
-      </div>
+  <nav class="filters" aria-label="Filter cards">
+    <button data-filter="all" class="active">All</button>
+    <button data-filter="W">White</button>
+    <button data-filter="U">Blue</button>
+    <button data-filter="B">Black</button>
+    <button data-filter="R">Red</button>
+    <button data-filter="G">Green</button>
+    <button data-filter="M">Multicolor</button>
+    <button data-filter="A">Artifact</button>
+    <button data-filter="NB">Non-Basic Land</button>
+    <button data-filter="BL">Basic Land</button>
+  </nav>
 
-      <!-- Add more cards here, one per div -->
-    </div>
+  <main id="gallery" class="gallery" aria-live="polite">
+    <!-- Cards will be injected here by script.js using images.json -->
   </main>
 
-  <script>
-    // Simple filter logic
-    const buttons = document.querySelectorAll('.filter-button');
-    const cards = document.querySelectorAll('.card');
+  <footer class="site-footer">
+    <small>Made with care — Outer Realms starter gallery</small>
+  </footer>
 
-    buttons.forEach(button => {
-      button.addEventListener('click', () => {
-        const filter = button.dataset.filter;
-        cards.forEach(card => {
-          if (filter === 'all' || card.dataset.color === filter) {
-            card.style.display = 'block';
-          } else {
-            card.style.display = 'none';
-          }
-        });
-      });
-    });
-  </script>
+<script src="script.js"></script>
 </body>
 </html>
