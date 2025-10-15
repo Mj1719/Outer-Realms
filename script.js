@@ -13,6 +13,7 @@ const cards = [
 
   // ===== RED =====
   // Example: { name: "Flameborn Ritualist", color: "red", img: "cards/Flameborn_Ritualist.jpg" },
+  { name: "Flame Birth", color: "red", img: "cards/Flame_Birth.png" },
 
   // ===== GREEN =====
   // Example: { name: "Sylvan Envoy", color: "green", img: "cards/Sylvan_Envoy.jpg" },
