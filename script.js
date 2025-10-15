@@ -7,18 +7,18 @@ const cards = [
 
   // ===== BLUE =====
   // Example: { name: "Oath of the Outer Realms", color: "blue", img: "cards/Oath_of_the_Outer_Realms.jpg" },
-  { name: "Force Mage", color: "U", img: "cards/Force Mage.png" },
+  { name: "Force Mage", color: "blue", img: "cards/Force Mage.png" },
 
   // ===== BLACK =====
   // Example: { name: "Infernal Gatebreaker", color: "black", img: "cards/Infernal_Gatebreaker.png" },
 
   // ===== RED =====
   // Example: { name: "Flameborn Ritualist", color: "red", img: "cards/Flameborn_Ritualist.jpg" },
-  { name: "Flame Birth", color: "R", img: "cards/Flame_Birth.png" },
+  { name: "Flame Birth", color: "red", img: "cards/Flame_Birth.png" },
 
   // ===== GREEN =====
   // Example: { name: "Sylvan Envoy", color: "green", img: "cards/Sylvan_Envoy.jpg" },
-  { name: "Spirit Call", color: "G", img: "cards/Spirit Call.png" },
+  { name: "Spirit Call", color: "green", img: "cards/Spirit Call.png" },
 
   // ===== MULTICOLOR =====
   // Example: { name: "Prophet of the Rift", color: "multicolor", img: "cards/Prophet_of_the_Rift.jpg" },
