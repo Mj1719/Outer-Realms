@@ -38,3 +38,44 @@ body{
 .site-footer{text-align:center;padding:24px;color:var(--muted);font-size:13px}
 
 /*
+/* 📱 Mobile adjustments */
+@media (max-width: 768px) {
+  header {
+    padding: 12px;
+  }
+
+  h1 {
+    font-size: 1.8em;
+  }
+
+  .subtitle {
+    font-size: 0.9em;
+  }
+
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 8px;
+  }
+
+  .filter-button {
+    font-size: 0.85em;
+    padding: 5px 8px;
+    margin: 2px;
+  }
+
+  .cards-grid {
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .card {
+    max-width: 160px;
+  }
+
+  .card p {
+    font-size: 0.85em;
+  }
+}
