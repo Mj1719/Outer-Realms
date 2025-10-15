@@ -39,6 +39,18 @@ const cards = [
 const gallery = document.getElementById("gallery");
 const filterButtons = document.querySelectorAll(".filters button");
 
+const colorMap = {
+  W: "White",
+  U: "Blue",
+  B: "Black",
+  R: "Red",
+  G: "Green",
+  M: "Multicolor",
+  A: "Artifact",
+  NB: "Non-Basic Land",
+  BL: "Basic Land"
+};
+
 console.log("Buttons found:", filterButtons.length);
 
 function displayCards(filteredCards) {
@@ -67,9 +79,10 @@ filterButtons.forEach(button => {
       return;
     }
 
-    const filtered = cards.filter(card => {
-      return card.color === filter;
-    });
+const filtered = cards.filter(card => {
+  const colorName = colorMap[filter];
+  return card.color === filter || card.color === colorName;
+});
 
     console.log("Filtered cards:", filtered.length);
     displayCards(filtered);
