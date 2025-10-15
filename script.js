@@ -83,7 +83,13 @@ const filtered = cards.filter(card => {
   const colorName = colorMap[filter];
   return card.color === filter || card.color === colorName;
 });
-    
+
+        console.log("Filtered cards:", filtered.length);
+    displayCards(filtered);
+  });
+});
+
+displayCards(cards);
 // ===== LIGHTBOX WITH ARROWS =====
 const lightbox = document.getElementById('lightbox');
 const lightboxImg = document.getElementById('lightbox-img');
@@ -135,10 +141,3 @@ document.addEventListener('keydown', e => {
     if (e.key === 'Escape') closeLightbox();
   }
 });
-
-    console.log("Filtered cards:", filtered.length);
-    displayCards(filtered);
-  });
-});
-
-displayCards(cards);
