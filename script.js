@@ -39,6 +39,8 @@ const cards = [
 const gallery = document.getElementById("gallery");
 const filterButtons = document.querySelectorAll(".filters button");
 
+console.log("Buttons found:", filterButtons.length);
+
 function displayCards(filteredCards) {
   gallery.innerHTML = "";
   filteredCards.forEach(card => {
@@ -51,10 +53,10 @@ function displayCards(filteredCards) {
   });
 }
 
-// Handle filter clicks
 filterButtons.forEach(button => {
   button.addEventListener("click", () => {
-    // Update active button styling
+    console.log("Button clicked:", button.dataset.filter);
+
     filterButtons.forEach(b => b.classList.remove("active"));
     button.classList.add("active");
 
@@ -62,17 +64,16 @@ filterButtons.forEach(button => {
 
     if (filter === "all") {
       displayCards(cards);
-    } else {
-      const filtered = cards.filter(card => card.color === filter);
-      displayCards(filtered);
+      return;
     }
+
+    const filtered = cards.filter(card => {
+      return card.color === filter;
+    });
+
+    console.log("Filtered cards:", filtered.length);
+    displayCards(filtered);
   });
 });
 
-// Show all cards by default
-displayCards(cards);
-
-});
-
-// Show all cards by default
 displayCards(cards);
