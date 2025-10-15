@@ -83,6 +83,58 @@ const filtered = cards.filter(card => {
   const colorName = colorMap[filter];
   return card.color === filter || card.color === colorName;
 });
+    
+// ===== LIGHTBOX WITH ARROWS =====
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightbox-img');
+const prevBtn = document.getElementById('prev');
+const nextBtn = document.getElementById('next');
+let currentIndex = -1;
+let galleryImages = [];
+
+document.addEventListener('click', e => {
+  const clickedImg = e.target.closest('.card img');
+  if (clickedImg) {
+    galleryImages = Array.from(document.querySelectorAll('.card img'));
+    currentIndex = galleryImages.indexOf(clickedImg);
+    showImage(currentIndex);
+    lightbox.style.display = 'flex';
+  } else if (e.target === lightbox) {
+    closeLightbox();
+  }
+});
+
+function showImage(index) {
+  if (index >= 0 && index < galleryImages.length) {
+    lightboxImg.src = galleryImages[index].src;
+  }
+}
+
+function closeLightbox() {
+  lightbox.style.display = 'none';
+  lightboxImg.src = '';
+  currentIndex = -1;
+}
+
+prevBtn.addEventListener('click', e => {
+  e.stopPropagation();
+  currentIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
+  showImage(currentIndex);
+});
+
+nextBtn.addEventListener('click', e => {
+  e.stopPropagation();
+  currentIndex = (currentIndex + 1) % galleryImages.length;
+  showImage(currentIndex);
+});
+
+document.addEventListener('keydown', e => {
+  if (lightbox.style.display === 'flex') {
+    if (e.key === 'ArrowLeft') prevBtn.click();
+    if (e.key === 'ArrowRight') nextBtn.click();
+    if (e.key === 'Escape') closeLightbox();
+  }
+});
 
     console.log("Filtered cards:", filtered.length);
     displayCards(filtered);
