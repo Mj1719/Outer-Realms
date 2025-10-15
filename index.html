@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Outer Realms — Gallery</title>
+  <link href="style.css" rel="stylesheet">
+  <!-- Using Google Fonts for a medieval vibe (requires internet when viewing) -->
+  <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:ital@0;1&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <h1>Outer Realms</h1>
+    <p class="subtitle">A gallery of custom cards — filter by color or type</p>
+  </header>
+
+  <nav class="filters" aria-label="Filter cards">
+    <button data-filter="all" class="active">All</button>
+    <button data-filter="W">White</button>
+    <button data-filter="U">Blue</button>
+    <button data-filter="B">Black</button>
+    <button data-filter="R">Red</button>
+    <button data-filter="G">Green</button>
+    <button data-filter="M">Multicolor</button>
+    <button data-filter="A">Artifact</button>
+    <button data-filter="NB">Non-Basic Land</button>
+    <button data-filter="BL">Basic Land</button>
+  </nav>
+
+  <main id="gallery" class="gallery" aria-live="polite">
+    <!-- Cards will be injected here by script.js using images.json -->
+  </main>
+
+  <footer class="site-footer">
+    <small>Made with care — Outer Realms starter gallery</small>
+  </footer>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+[
+  {
+    "filename": "cards/W01.png",
+    "title": "White Example 01",
+    "type": "W"
+  },
+  {
+    "filename": "cards/U01.png",
+    "title": "Blue Example 01",
+    "type": "U"
+  },
+  {
+    "filename": "cards/B01.png",
+    "title": "Black Example 01",
+    "type": "B"
+  },
+  {
+    "filename": "cards/R01.png",
+    "title": "Red Example 01",
+    "type": "R"
+  },
+  {
+    "filename": "cards/G01.png",
+    "title": "Green Example 01",
+    "type": "G"
+  },
+  {
+    "filename": "cards/M01.png",
+    "title": "Multicolor Example 01",
+    "type": "M"
+  },
+  {
+    "filename": "cards/A01.png",
+    "title": "Artifact Example 01",
+    "type": "A"
+  },
+  {
+    "filename": "cards/NB01.png",
+    "title": "NonBasicLand Example 01",
+    "type": "NB"
+  },
+  {
+    "filename": "cards/BL01.png",
+    "title": "BasicLand Example 01",
+    "type": "BL"
+  }
+]
