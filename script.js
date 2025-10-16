@@ -93,108 +93,93 @@ window.addEventListener("scroll", () => {
 // ===== INITIAL DISPLAY =====
 displayCards(cards);
 
-// ===== LIGHTBOX =====
-const lightbox = document.getElementById('lightbox');
+/* === LIGHTBOX WITH MOMENTUM SWIPE (MOBILE OPTIMIZED) === */
+const lightbox = document.createElement('div');
+lightbox.id = 'lightbox';
+lightbox.innerHTML = `
+  <span class="nav-arrow left">&#10094;</span>
+  <img id="lightbox-img" src="" alt="Full view" />
+  <span class="nav-arrow right">&#10095;</span>
+`;
+document.body.appendChild(lightbox);
+
 const lightboxImg = document.getElementById('lightbox-img');
-const prevBtn = document.getElementById('prev');
-const nextBtn = document.getElementById('next');
+const leftArrow = document.querySelector('.nav-arrow.left');
+const rightArrow = document.querySelector('.nav-arrow.right');
+let currentIndex = 0;
+let galleryImages = Array.from(document.querySelectorAll('.card'));
+let startX = 0, startY = 0, endX = 0, endY = 0;
+let isLightboxOpen = false;
 
-let currentIndex = -1;
-let startX = 0;
-let startY = 0;
-let endX = 0;
-let endY = 0;
-
-// --- Tap to open (requires click-release) ---
-document.addEventListener('click', e => {
-  const clickedImg = e.target.closest('.card');
-  if (clickedImg) {
+// Tap to open (after release)
+galleryImages.forEach((card, index) => {
+  card.addEventListener('touchend', (e) => {
     e.preventDefault();
-    galleryImages = Array.from(document.querySelectorAll('.card'));
-    currentIndex = galleryImages.indexOf(clickedImg);
-    showImage(currentIndex);
-    lightbox.classList.add('show');
-  }
+    openLightbox(index);
+  });
+  card.addEventListener('click', () => openLightbox(index));
 });
 
-// --- Show image with smooth animation ---
-function showImage(index, direction = null) {
-  if (index < 0 || index >= galleryImages.length) return;
-
-  const img = lightboxImg;
-  img.classList.remove('slide-left', 'slide-right');
-
-  // Trigger reflow so animation restarts
-  void img.offsetWidth;
-
-  img.src = galleryImages[index].src;
-
-  // Apply animation direction if provided
-  if (direction === 'left') img.classList.add('slide-left');
-  else if (direction === 'right') img.classList.add('slide-right');
+function openLightbox(index) {
+  currentIndex = index;
+  const img = galleryImages[currentIndex].querySelector('img');
+  if (!img) return;
+  lightboxImg.src = img.src;
+  lightbox.classList.add('show');
+  document.body.style.overflow = 'hidden'; // Disable page scroll
+  isLightboxOpen = true;
 }
 
-// --- Close lightbox ---
 function closeLightbox() {
   lightbox.classList.remove('show');
-  lightboxImg.src = '';
-  currentIndex = -1;
+  document.body.style.overflow = ''; // Re-enable scroll
+  isLightboxOpen = false;
 }
 
-// --- Close on click (desktop) ---
-lightbox.addEventListener('click', e => {
-  // Close only if user clicked background or the image itself
-  if (e.target === lightbox || e.target === lightboxImg) {
-    closeLightbox();
-  }
-});
+function showImage(index, direction = null) {
+  if (index < 0) index = galleryImages.length - 1;
+  if (index >= galleryImages.length) index = 0;
+  const img = galleryImages[index].querySelector('img');
+  if (!img) return;
+  lightboxImg.classList.remove('slide-left', 'slide-right');
+  void lightboxImg.offsetWidth; // Force reflow
+  if (direction === 'left') lightboxImg.classList.add('slide-left');
+  else if (direction === 'right') lightboxImg.classList.add('slide-right');
+  lightboxImg.src = img.src;
+  currentIndex = index;
+}
 
-// --- Arrows ---
-prevBtn.addEventListener('click', e => {
-  e.stopPropagation();
-  currentIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
-  showImage(currentIndex, 'right');
-});
+leftArrow.addEventListener('click', () => showImage(currentIndex - 1, 'right'));
+rightArrow.addEventListener('click', () => showImage(currentIndex + 1, 'left'));
 
-nextBtn.addEventListener('click', e => {
-  e.stopPropagation();
-  currentIndex = (currentIndex + 1) % galleryImages.length;
-  showImage(currentIndex, 'left');
-});
-
-// --- Keyboard navigation ---
-document.addEventListener('keydown', e => {
-  if (!lightbox.classList.contains('show')) return;
-  if (e.key === 'ArrowLeft') prevBtn.click();
-  if (e.key === 'ArrowRight') nextBtn.click();
-  if (e.key === 'Escape') closeLightbox();
-});
-
-// --- Touch gestures (swipe left/right or up to close) ---
-lightbox.addEventListener('touchstart', e => {
+// === Swipe Detection ===
+lightbox.addEventListener('touchstart', (e) => {
   startX = e.touches[0].clientX;
   startY = e.touches[0].clientY;
-});
+}, { passive: true });
 
-lightbox.addEventListener('touchend', e => {
-  endX = e.changedTouches[0].clientX;
-  endY = e.changedTouches[0].clientY;
+lightbox.addEventListener('touchmove', (e) => {
+  endX = e.touches[0].clientX;
+  endY = e.touches[0].clientY;
+}, { passive: true });
 
-  const deltaX = endX - startX;
-  const deltaY = endY - startY;
+lightbox.addEventListener('touchend', () => {
+  const diffX = endX - startX;
+  const diffY = endY - startY;
+  const absX = Math.abs(diffX);
+  const absY = Math.abs(diffY);
 
-  // Swipe up to close
-  if (Math.abs(deltaY) > 80 && deltaY < 0) {
+  // Horizontal swipe for next/prev (momentum feel)
+  if (absX > 40 && absX > absY) {
+    if (diffX > 0) showImage(currentIndex - 1, 'right');
+    else showImage(currentIndex + 1, 'left');
+  }
+
+  // Vertical swipe to close
+  if (absY > 60 && absY > absX) {
     closeLightbox();
   }
-  // Swipe left/right to navigate
-  else if (Math.abs(deltaX) > 50 && Math.abs(deltaY) < 60) {
-    if (deltaX > 0) {
-      currentIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
-      showImage(currentIndex, 'right');
-    } else {
-      currentIndex = (currentIndex + 1) % galleryImages.length;
-      showImage(currentIndex, 'left');
-    }
-  }
+
+  startX = startY = endX = endY = 0;
 });
+
