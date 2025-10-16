@@ -109,7 +109,6 @@ const lightboxImg = document.getElementById('lightbox-img');
 const prevBtn = document.getElementById('prev');
 const nextBtn = document.getElementById('next');
 let currentIndex = -1;
-let galleryImages = [];
 
 // --- Open Lightbox (works for tap or click) ---
 document.addEventListener('click', handleImageClick);
