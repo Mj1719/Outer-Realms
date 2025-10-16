@@ -103,87 +103,105 @@ const filtered = cards.filter(card => {
 });
 
 displayCards(cards);
-// ===== LIGHTBOX WITH ARROWS + MOBILE SWIPE =====
+// ===== LIGHTBOX WITH FADE + SWIPE ANIMATIONS =====
+
 const lightbox = document.getElementById('lightbox');
 const lightboxImg = document.getElementById('lightbox-img');
 const prevBtn = document.getElementById('prev');
 const nextBtn = document.getElementById('next');
 let currentIndex = -1;
 
-// --- Open Lightbox (works for tap or click) ---
-document.addEventListener('click', handleImageClick);
-document.addEventListener('touchstart', handleImageClick);
-
-function handleImageClick(e) {
+// --- Handle clicks (tap to open) ---
+document.addEventListener('click', e => {
   const clickedImg = e.target.closest('.card');
   if (clickedImg) {
     galleryImages = Array.from(document.querySelectorAll('.card'));
     currentIndex = galleryImages.indexOf(clickedImg);
     showImage(currentIndex);
-    lightbox.style.display = 'flex';
-  } else if (e.target === lightbox) {
-    closeLightbox();
+    openLightbox();
   }
+});
+
+// --- Open Lightbox ---
+function openLightbox() {
+  lightbox.classList.add('show');
+  lightbox.style.display = 'flex';
+  requestAnimationFrame(() => {
+    lightbox.style.opacity = '1';
+  });
 }
 
-// --- Display selected image ---
-function showImage(index) {
+// --- Show Image with slide animation ---
+function showImage(index, direction = null) {
   if (index >= 0 && index < galleryImages.length) {
-    lightboxImg.src = galleryImages[index].src;
+    const newSrc = galleryImages[index].src;
+    lightboxImg.classList.remove('slide-left', 'slide-right');
+    if (direction) {
+      lightboxImg.classList.add(direction === 'next' ? 'slide-left' : 'slide-right');
+    }
+    lightboxImg.src = newSrc;
   }
 }
 
 // --- Close Lightbox ---
 function closeLightbox() {
-  lightbox.style.display = 'none';
-  lightboxImg.src = '';
-  currentIndex = -1;
+  lightbox.style.opacity = '0';
+  setTimeout(() => {
+    lightbox.classList.remove('show');
+    lightbox.style.display = 'none';
+    lightboxImg.src = '';
+    currentIndex = -1;
+  }, 300);
 }
 
 // --- Arrow Navigation ---
 prevBtn.addEventListener('click', e => {
   e.stopPropagation();
   currentIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
-  showImage(currentIndex);
+  showImage(currentIndex, 'prev');
 });
 
 nextBtn.addEventListener('click', e => {
   e.stopPropagation();
   currentIndex = (currentIndex + 1) % galleryImages.length;
-  showImage(currentIndex);
+  showImage(currentIndex, 'next');
 });
 
-// --- Keyboard Navigation (Desktop) ---
+// --- Keyboard Navigation ---
 document.addEventListener('keydown', e => {
-  if (lightbox.style.display === 'flex') {
+  if (lightbox.classList.contains('show')) {
     if (e.key === 'ArrowLeft') prevBtn.click();
     if (e.key === 'ArrowRight') nextBtn.click();
     if (e.key === 'Escape') closeLightbox();
   }
 });
 
-// --- Mobile Swipe Support ---
-let startX = 0;
-let endX = 0;
+// --- Mobile Swipe + Tap Up/Down to Close ---
+let startX = 0, startY = 0, endX = 0, endY = 0;
 
 lightbox.addEventListener('touchstart', e => {
   startX = e.touches[0].clientX;
+  startY = e.touches[0].clientY;
 });
 
 lightbox.addEventListener('touchend', e => {
   endX = e.changedTouches[0].clientX;
+  endY = e.changedTouches[0].clientY;
   handleSwipe();
 });
 
 function handleSwipe() {
-  const swipeDistance = endX - startX;
-  if (Math.abs(swipeDistance) > 50) {
-    if (swipeDistance > 0) {
-      prevBtn.click(); // swipe right → previous
-    } else {
-      nextBtn.click(); // swipe left → next
-    }
-  } else {
-    closeLightbox(); // short tap → close
+  const diffX = endX - startX;
+  const diffY = endY - startY;
+
+  // Horizontal swipe (next/prev)
+  if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+    if (diffX > 0) prevBtn.click(); else nextBtn.click();
+    return;
+  }
+
+  // Vertical swipe (close)
+  if (Math.abs(diffY) > 50) {
+    closeLightbox();
   }
 }
