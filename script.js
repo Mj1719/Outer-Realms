@@ -98,15 +98,19 @@ const filtered = cards.filter(card => {
 });
 
 displayCards(cards);
-// ===== LIGHTBOX WITH ARROWS =====
+// ===== LIGHTBOX WITH ARROWS + MOBILE SWIPE =====
 const lightbox = document.getElementById('lightbox');
 const lightboxImg = document.getElementById('lightbox-img');
 const prevBtn = document.getElementById('prev');
 const nextBtn = document.getElementById('next');
 let currentIndex = -1;
+let galleryImages = [];
 
+// --- Open Lightbox (works for tap or click) ---
+document.addEventListener('click', handleImageClick);
+document.addEventListener('touchstart', handleImageClick);
 
-document.addEventListener('click', e => {
+function handleImageClick(e) {
   const clickedImg = e.target.closest('.card');
   if (clickedImg) {
     galleryImages = Array.from(document.querySelectorAll('.card'));
@@ -116,20 +120,23 @@ document.addEventListener('click', e => {
   } else if (e.target === lightbox) {
     closeLightbox();
   }
-});
+}
 
+// --- Display selected image ---
 function showImage(index) {
   if (index >= 0 && index < galleryImages.length) {
     lightboxImg.src = galleryImages[index].src;
   }
 }
 
+// --- Close Lightbox ---
 function closeLightbox() {
   lightbox.style.display = 'none';
   lightboxImg.src = '';
   currentIndex = -1;
 }
 
+// --- Arrow Navigation ---
 prevBtn.addEventListener('click', e => {
   e.stopPropagation();
   currentIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
@@ -142,6 +149,7 @@ nextBtn.addEventListener('click', e => {
   showImage(currentIndex);
 });
 
+// --- Keyboard Navigation (Desktop) ---
 document.addEventListener('keydown', e => {
   if (lightbox.style.display === 'flex') {
     if (e.key === 'ArrowLeft') prevBtn.click();
@@ -149,3 +157,29 @@ document.addEventListener('keydown', e => {
     if (e.key === 'Escape') closeLightbox();
   }
 });
+
+// --- Mobile Swipe Support ---
+let startX = 0;
+let endX = 0;
+
+lightbox.addEventListener('touchstart', e => {
+  startX = e.touches[0].clientX;
+});
+
+lightbox.addEventListener('touchend', e => {
+  endX = e.changedTouches[0].clientX;
+  handleSwipe();
+});
+
+function handleSwipe() {
+  const swipeDistance = endX - startX;
+  if (Math.abs(swipeDistance) > 50) {
+    if (swipeDistance > 0) {
+      prevBtn.click(); // swipe right → previous
+    } else {
+      nextBtn.click(); // swipe left → next
+    }
+  } else {
+    closeLightbox(); // short tap → close
+  }
+}
