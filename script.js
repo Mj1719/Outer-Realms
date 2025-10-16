@@ -31,7 +31,7 @@ const cards = [
 
   // ===== ARTIFACT =====
   // Example: { name: "", color: "A", img: "cards/.png" },
-  { name: "Herbalists Relics", color: "A", img: "cards/Herbalistsrelicsland.png" },
+  { name: "Herbalists Relics", color: "A", img: "cards/Herbalists Relicsland.png" },
 
   // ===== NON-BASIC LAND =====
   // Example: { name: "", color: "NB", img: "cards/.png" },
