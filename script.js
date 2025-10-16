@@ -105,10 +105,11 @@ let startY = 0;
 let endX = 0;
 let endY = 0;
 
-// --- Tap-to-open (no instant open on scroll) ---
+// --- Tap to open (requires click-release) ---
 document.addEventListener('click', e => {
   const clickedImg = e.target.closest('.card');
   if (clickedImg) {
+    e.preventDefault();
     galleryImages = Array.from(document.querySelectorAll('.card'));
     currentIndex = galleryImages.indexOf(clickedImg);
     showImage(currentIndex);
@@ -116,12 +117,21 @@ document.addEventListener('click', e => {
   }
 });
 
-// --- Show image ---
-function showImage(index) {
-  if (index >= 0 && index < galleryImages.length) {
-    lightboxImg.src = galleryImages[index].src;
-    lightboxImg.classList.remove('slide-left', 'slide-right');
-  }
+// --- Show image with smooth animation ---
+function showImage(index, direction = null) {
+  if (index < 0 || index >= galleryImages.length) return;
+
+  const img = lightboxImg;
+  img.classList.remove('slide-left', 'slide-right');
+
+  // Trigger reflow so animation restarts
+  void img.offsetWidth;
+
+  img.src = galleryImages[index].src;
+
+  // Apply animation direction if provided
+  if (direction === 'left') img.classList.add('slide-left');
+  else if (direction === 'right') img.classList.add('slide-right');
 }
 
 // --- Close lightbox ---
@@ -131,22 +141,28 @@ function closeLightbox() {
   currentIndex = -1;
 }
 
+// --- Close on click (desktop) ---
+lightbox.addEventListener('click', e => {
+  // Close only if user clicked background or the image itself
+  if (e.target === lightbox || e.target === lightboxImg) {
+    closeLightbox();
+  }
+});
+
 // --- Arrows ---
 prevBtn.addEventListener('click', e => {
   e.stopPropagation();
   currentIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
-  lightboxImg.classList.add('slide-left');
-  showImage(currentIndex);
+  showImage(currentIndex, 'right');
 });
 
 nextBtn.addEventListener('click', e => {
   e.stopPropagation();
   currentIndex = (currentIndex + 1) % galleryImages.length;
-  lightboxImg.classList.add('slide-right');
-  showImage(currentIndex);
+  showImage(currentIndex, 'left');
 });
 
-// --- Keyboard ---
+// --- Keyboard navigation ---
 document.addEventListener('keydown', e => {
   if (!lightbox.classList.contains('show')) return;
   if (e.key === 'ArrowLeft') prevBtn.click();
@@ -154,7 +170,7 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeLightbox();
 });
 
-// --- Touch gestures (swipe left/right, swipe up to close) ---
+// --- Touch gestures (swipe left/right or up to close) ---
 lightbox.addEventListener('touchstart', e => {
   startX = e.touches[0].clientX;
   startY = e.touches[0].clientY;
@@ -167,10 +183,18 @@ lightbox.addEventListener('touchend', e => {
   const deltaX = endX - startX;
   const deltaY = endY - startY;
 
+  // Swipe up to close
   if (Math.abs(deltaY) > 80 && deltaY < 0) {
-    closeLightbox(); // swipe up to close
-  } else if (Math.abs(deltaX) > 50) {
-    if (deltaX > 0) prevBtn.click(); // swipe right
-    else nextBtn.click(); // swipe left
+    closeLightbox();
+  }
+  // Swipe left/right to navigate
+  else if (Math.abs(deltaX) > 50 && Math.abs(deltaY) < 60) {
+    if (deltaX > 0) {
+      currentIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
+      showImage(currentIndex, 'right');
+    } else {
+      currentIndex = (currentIndex + 1) % galleryImages.length;
+      showImage(currentIndex, 'left');
+    }
   }
 });
