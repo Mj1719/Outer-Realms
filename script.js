@@ -63,6 +63,9 @@ function displayCards(filteredCards) {
     img.classList.add("card");
     gallery.appendChild(img);
   });
+  
+  // Refresh gallery images for lightbox navigation
+galleryImages = Array.from(document.querySelectorAll('.card'));
 }
 
 filterButtons.forEach(button => {
@@ -99,7 +102,7 @@ let currentIndex = -1;
 let galleryImages = [];
 
 document.addEventListener('click', e => {
-  const clickedImg = e.target.closest('.card img');
+  const clickedImg = e.target.closest('.card');
   if (clickedImg) {
     galleryImages = Array.from(document.querySelectorAll('.card img'));
     currentIndex = galleryImages.indexOf(clickedImg);
