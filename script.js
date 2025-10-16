@@ -19,7 +19,10 @@ const cards = [
   // ===== GREEN =====
   // Example: { name: "Sylvan Envoy", color: "green", img: "cards/Sylvan_Envoy.jpg" },
   { name: "Spirit Call", color: "G", img: "cards/Spirit Call.png" },
-
+  { name: "Kolani Beastmaster", color: "G", img: "cards/Kolani Beastmaster.png" },
+  { name: "Leaf Turner", color: "G", img: "cards/Leaf Turner.png" },
+  { name: "Leaping Baloth", color: "G", img: "cards/Leaping Baloth.png" },
+  
   // ===== MULTICOLOR =====
   // Example: { name: "Prophet of the Rift", color: "multicolor", img: "cards/Prophet_of_the_Rift.jpg" },
 
