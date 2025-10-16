@@ -112,17 +112,17 @@ let startX = 0, startY = 0, endX = 0, endY = 0;
 let isLightboxOpen = false;
 
 // Tap to open (after release)
-galleryImages.forEach((card, index) => {
-  card.addEventListener('touchend', (e) => {
+galleryImages.forEach((img, index) => {
+  img.addEventListener('touchend', (e) => {
     e.preventDefault();
     openLightbox(index);
   });
-  card.addEventListener('click', () => openLightbox(index));
+  img.addEventListener('click', () => openLightbox(index));
 });
 
 function openLightbox(index) {
   currentIndex = index;
-  const img = galleryImages[currentIndex].querySelector('img');
+  const img = galleryImages[currentIndex];
   if (!img) return;
   lightboxImg.src = img.src;
   lightbox.classList.add('show');
@@ -139,7 +139,7 @@ function closeLightbox() {
 function showImage(index, direction = null) {
   if (index < 0) index = galleryImages.length - 1;
   if (index >= galleryImages.length) index = 0;
-  const img = galleryImages[index].querySelector('img');
+  const img = galleryImages[index];
   if (!img) return;
   lightboxImg.classList.remove('slide-left', 'slide-right');
   void lightboxImg.offsetWidth; // Force reflow
@@ -182,4 +182,3 @@ lightbox.addEventListener('touchend', () => {
 
   startX = startY = endX = endY = 0;
 });
-
