@@ -3,7 +3,8 @@
 // This is your full card list — edit it as you add images.
 const cards = [
   // ===== WHITE =====
-  // Example: { name: "Radiant Paladin", color: "white", img: "cards/Radiant_Paladin.jpg" },
+  // Example: { name: "", color: "W", img: "cards/.png" },
+  { name: "Archeologists", color: "W", img: "cards/Archeologists.png" },
 
   // ===== BLUE =====
   // Example: { name: "Oath of the Outer Realms", color: "blue", img: "cards/Oath_of_the_Outer_Realms.jpg" },
@@ -24,13 +25,17 @@ const cards = [
   { name: "Leaping Baloth", color: "G", img: "cards/Leaping Baloth.png" },
   
   // ===== MULTICOLOR =====
-  // Example: { name: "Prophet of the Rift", color: "multicolor", img: "cards/Prophet_of_the_Rift.jpg" },
+  // Example: { name: "", color: "M", img: "cards/.png" },
+  { name: "Brimstone", color: "M", img: "cards/Brimstone2.png" },
+  { name: "Careful Looting", color: "M", img: "cards/Careful Looting.png" },
 
   // ===== ARTIFACT =====
-  // Example: { name: "Obsidian Compass", color: "artifact", img: "cards/Obsidian_Compass.jpg" },
+  // Example: { name: "", color: "A", img: "cards/.png" },
+  { name: "Herbalists Relics", color: "A", img: "cards/Herbalistsrelicsland.png" },
 
   // ===== NON-BASIC LAND =====
-  // Example: { name: "The Shattered Isle", color: "nonbasic", img: "cards/The_Shattered_Isle.jpg" },
+  // Example: { name: "", color: "NB", img: "cards/.png" },
+   { name: "Wooded Spire", color: "NB", img: "cards/Wooded Spire.png" },
 
   // ===== BASIC LAND =====
   // Example: { name: "Plains", color: "basic", img: "cards/Plains.jpg" },
