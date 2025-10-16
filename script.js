@@ -1,49 +1,22 @@
-// ===== OUTER REALMS GALLERY SCRIPT =====
+// ===== OUTER REALMS GALLERY SCRIPT (Lazy Load + Lightbox + Pagination) =====
 
-// This is your full card list — edit it as you add images.
+// ===== CARD DATA =====
 const cards = [
-  // ===== WHITE =====
-  // Example: { name: "", color: "W", img: "cards/.png" },
   { name: "Archeologists", color: "W", img: "cards/Archeologists.png" },
-
-  // ===== BLUE =====
-  // Example: { name: "Oath of the Outer Realms", color: "blue", img: "cards/Oath_of_the_Outer_Realms.jpg" },
   { name: "Force Mage", color: "U", img: "cards/Force Mage.png" },
-
-  // ===== BLACK =====
-  // Example: { name: "Infernal Gatebreaker", color: "black", img: "cards/Infernal_Gatebreaker.png" },
-
-  // ===== RED =====
-  // Example: { name: "Flameborn Ritualist", color: "red", img: "cards/Flameborn_Ritualist.jpg" },
   { name: "Flame Birth", color: "R", img: "cards/Flame_Birth.png" },
-
-  // ===== GREEN =====
-  // Example: { name: "Sylvan Envoy", color: "green", img: "cards/Sylvan_Envoy.jpg" },
   { name: "Spirit Call", color: "G", img: "cards/Spirit Call.png" },
   { name: "Kolani Beastmaster", color: "G", img: "cards/Kolani Beastmaster.png" },
   { name: "Leaf Turner", color: "G", img: "cards/Leaf Turner.png" },
   { name: "Leaping Baloth", color: "G", img: "cards/Leaping Baloth.png" },
-  
-  // ===== MULTICOLOR =====
-  // Example: { name: "", color: "M", img: "cards/.png" },
   { name: "Brimstone", color: "M", img: "cards/Brimstone2.png" },
   { name: "Careful Looting", color: "M", img: "cards/Careful Looting.png" },
-
-  // ===== ARTIFACT =====
-  // Example: { name: "", color: "A", img: "cards/.png" },
   { name: "Herbalists Relics", color: "A", img: "cards/Herbalists Relicsland.png" },
-
-  // ===== NON-BASIC LAND =====
-  // Example: { name: "", color: "NB", img: "cards/.png" },
-   { name: "Wooded Spire", color: "NB", img: "cards/Wooded Spire.png" },
-
-  // ===== BASIC LAND =====
-  // Example: { name: "Plains", color: "basic", img: "cards/Plains.jpg" },
+  { name: "Wooded Spire", color: "NB", img: "cards/Wooded Spire.png" },
+  // ... (add all remaining cards here)
 ];
 
-// ===== Filter + Display Logic =====
-
-// Build the grid on page load
+// ===== GLOBAL ELEMENTS =====
 const gallery = document.getElementById("gallery");
 const filterButtons = document.querySelectorAll(".filters button");
 
@@ -59,126 +32,129 @@ const colorMap = {
   BL: "Basic Land"
 };
 
-console.log("Buttons found:", filterButtons.length);
-
+// ===== PAGINATION SETTINGS =====
+let currentPage = 1;
+const cardsPerPage = 80;
+let currentFilter = "all";
 let galleryImages = [];
 
-function displayCards(filteredCards) {
-  gallery.innerHTML = "";
-  filteredCards.forEach(card => {
+// ===== GALLERY DISPLAY =====
+function displayCards(filteredCards, reset = true) {
+  if (reset) gallery.innerHTML = "";
+
+  const start = (currentPage - 1) * cardsPerPage;
+  const end = start + cardsPerPage;
+  const visibleCards = filteredCards.slice(0, end);
+
+  visibleCards.forEach(card => {
     const img = document.createElement("img");
     img.src = card.img;
     img.alt = card.name;
     img.title = card.name;
     img.classList.add("card");
+    img.loading = "lazy";
     gallery.appendChild(img);
   });
-  
-  // Refresh gallery images for lightbox navigation
-galleryImages = Array.from(document.querySelectorAll('.card'));
+
+  galleryImages = Array.from(document.querySelectorAll('.card'));
 }
 
+// ===== FILTER BUTTONS =====
 filterButtons.forEach(button => {
   button.addEventListener("click", () => {
-    console.log("Button clicked:", button.dataset.filter);
-
     filterButtons.forEach(b => b.classList.remove("active"));
     button.classList.add("active");
 
-    const filter = button.dataset.filter;
+    currentFilter = button.dataset.filter;
+    currentPage = 1;
 
-    if (filter === "all") {
-      displayCards(cards);
-      return;
-    }
+    const filtered = (currentFilter === "all")
+      ? cards
+      : cards.filter(card => card.color === currentFilter || colorMap[card.color] === currentFilter);
 
-const filtered = cards.filter(card => {
-  const colorName = colorMap[filter];
-  return card.color === filter || card.color === colorName;
-});
-
-        console.log("Filtered cards:", filtered.length);
     displayCards(filtered);
   });
 });
 
-displayCards(cards);
-// ===== LIGHTBOX WITH FADE + SWIPE ANIMATIONS =====
+// ===== LOAD MORE BUTTON (AUTO) =====
+window.addEventListener("scroll", () => {
+  if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 200) {
+    const filtered = (currentFilter === "all")
+      ? cards
+      : cards.filter(card => card.color === currentFilter || colorMap[card.color] === currentFilter);
 
+    if ((currentPage * cardsPerPage) < filtered.length) {
+      currentPage++;
+      displayCards(filtered, false);
+    }
+  }
+});
+
+// ===== INITIAL DISPLAY =====
+displayCards(cards);
+
+// ===== LIGHTBOX =====
 const lightbox = document.getElementById('lightbox');
 const lightboxImg = document.getElementById('lightbox-img');
 const prevBtn = document.getElementById('prev');
 const nextBtn = document.getElementById('next');
-let currentIndex = -1;
 
-// --- Handle clicks (tap to open) ---
+let currentIndex = -1;
+let startX = 0;
+let startY = 0;
+let endX = 0;
+let endY = 0;
+
+// --- Tap-to-open (no instant open on scroll) ---
 document.addEventListener('click', e => {
   const clickedImg = e.target.closest('.card');
   if (clickedImg) {
     galleryImages = Array.from(document.querySelectorAll('.card'));
     currentIndex = galleryImages.indexOf(clickedImg);
     showImage(currentIndex);
-    openLightbox();
+    lightbox.classList.add('show');
   }
 });
 
-// --- Open Lightbox ---
-function openLightbox() {
-  lightbox.classList.add('show');
-  lightbox.style.display = 'flex';
-  requestAnimationFrame(() => {
-    lightbox.style.opacity = '1';
-  });
-}
-
-// --- Show Image with slide animation ---
-function showImage(index, direction = null) {
+// --- Show image ---
+function showImage(index) {
   if (index >= 0 && index < galleryImages.length) {
-    const newSrc = galleryImages[index].src;
+    lightboxImg.src = galleryImages[index].src;
     lightboxImg.classList.remove('slide-left', 'slide-right');
-    if (direction) {
-      lightboxImg.classList.add(direction === 'next' ? 'slide-left' : 'slide-right');
-    }
-    lightboxImg.src = newSrc;
   }
 }
 
-// --- Close Lightbox ---
+// --- Close lightbox ---
 function closeLightbox() {
-  lightbox.style.opacity = '0';
-  setTimeout(() => {
-    lightbox.classList.remove('show');
-    lightbox.style.display = 'none';
-    lightboxImg.src = '';
-    currentIndex = -1;
-  }, 300);
+  lightbox.classList.remove('show');
+  lightboxImg.src = '';
+  currentIndex = -1;
 }
 
-// --- Arrow Navigation ---
+// --- Arrows ---
 prevBtn.addEventListener('click', e => {
   e.stopPropagation();
   currentIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
-  showImage(currentIndex, 'prev');
+  lightboxImg.classList.add('slide-left');
+  showImage(currentIndex);
 });
 
 nextBtn.addEventListener('click', e => {
   e.stopPropagation();
   currentIndex = (currentIndex + 1) % galleryImages.length;
-  showImage(currentIndex, 'next');
+  lightboxImg.classList.add('slide-right');
+  showImage(currentIndex);
 });
 
-// --- Keyboard Navigation ---
+// --- Keyboard ---
 document.addEventListener('keydown', e => {
-  if (lightbox.classList.contains('show')) {
-    if (e.key === 'ArrowLeft') prevBtn.click();
-    if (e.key === 'ArrowRight') nextBtn.click();
-    if (e.key === 'Escape') closeLightbox();
-  }
+  if (!lightbox.classList.contains('show')) return;
+  if (e.key === 'ArrowLeft') prevBtn.click();
+  if (e.key === 'ArrowRight') nextBtn.click();
+  if (e.key === 'Escape') closeLightbox();
 });
 
-// --- Mobile Swipe + Tap Up/Down to Close ---
-let startX = 0, startY = 0, endX = 0, endY = 0;
-
+// --- Touch gestures (swipe left/right, swipe up to close) ---
 lightbox.addEventListener('touchstart', e => {
   startX = e.touches[0].clientX;
   startY = e.touches[0].clientY;
@@ -187,21 +163,14 @@ lightbox.addEventListener('touchstart', e => {
 lightbox.addEventListener('touchend', e => {
   endX = e.changedTouches[0].clientX;
   endY = e.changedTouches[0].clientY;
-  handleSwipe();
+
+  const deltaX = endX - startX;
+  const deltaY = endY - startY;
+
+  if (Math.abs(deltaY) > 80 && deltaY < 0) {
+    closeLightbox(); // swipe up to close
+  } else if (Math.abs(deltaX) > 50) {
+    if (deltaX > 0) prevBtn.click(); // swipe right
+    else nextBtn.click(); // swipe left
+  }
 });
-
-function handleSwipe() {
-  const diffX = endX - startX;
-  const diffY = endY - startY;
-
-  // Horizontal swipe (next/prev)
-  if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
-    if (diffX > 0) prevBtn.click(); else nextBtn.click();
-    return;
-  }
-
-  // Vertical swipe (close)
-  if (Math.abs(diffY) > 50) {
-    closeLightbox();
-  }
-}
