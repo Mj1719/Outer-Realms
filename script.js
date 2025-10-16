@@ -107,7 +107,7 @@ let galleryImages = [];
 document.addEventListener('click', e => {
   const clickedImg = e.target.closest('.card');
   if (clickedImg) {
-    galleryImages = Array.from(document.querySelectorAll('.card img'));
+    galleryImages = Array.from(document.querySelectorAll('.card'));
     currentIndex = galleryImages.indexOf(clickedImg);
     showImage(currentIndex);
     lightbox.style.display = 'flex';
