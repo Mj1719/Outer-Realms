@@ -93,92 +93,119 @@ window.addEventListener("scroll", () => {
 // ===== INITIAL DISPLAY =====
 displayCards(cards);
 
-/* === LIGHTBOX WITH MOMENTUM SWIPE (MOBILE OPTIMIZED) === */
-const lightbox = document.createElement('div');
-lightbox.id = 'lightbox';
-lightbox.innerHTML = `
-  <span class="nav-arrow left">&#10094;</span>
-  <img id="lightbox-img" src="" alt="Full view" />
-  <span class="nav-arrow right">&#10095;</span>
-`;
-document.body.appendChild(lightbox);
-
+// ===== LIGHTBOX =====
+const lightbox = document.getElementById('lightbox');
 const lightboxImg = document.getElementById('lightbox-img');
-const leftArrow = document.querySelector('.nav-arrow.left');
-const rightArrow = document.querySelector('.nav-arrow.right');
-let currentIndex = 0;
-let galleryImages = Array.from(document.querySelectorAll('.card'));
-let startX = 0, startY = 0, endX = 0, endY = 0;
-let isLightboxOpen = false;
+const prevBtn = document.getElementById('prev');
+const nextBtn = document.getElementById('next');
 
-// Tap to open (after release)
-galleryImages.forEach((img, index) => {
-  img.addEventListener('touchend', (e) => {
-    e.preventDefault();
-    openLightbox(index);
-  });
-  img.addEventListener('click', () => openLightbox(index));
+let currentIndex = -1;
+let startX = 0, startY = 0, endX = 0, endY = 0;
+let hideArrowsTimeout;
+
+// --- Tap-to-open (no instant open on scroll) ---
+document.addEventListener('click', e => {
+  const clickedImg = e.target.closest('.card');
+  if (clickedImg) {
+    galleryImages = Array.from(document.querySelectorAll('.card'));
+    currentIndex = galleryImages.indexOf(clickedImg);
+    showImage(currentIndex);
+    lightbox.classList.add('show');
+    document.body.style.overflow = 'hidden'; // 🧱 Disable page scroll
+  }
 });
 
-function openLightbox(index) {
-  currentIndex = index;
-  const img = galleryImages[currentIndex];
-  if (!img) return;
-  lightboxImg.src = img.src;
-  lightbox.classList.add('show');
-  document.body.style.overflow = 'hidden'; // Disable page scroll
-  isLightboxOpen = true;
+// --- Show image ---
+function showImage(index) {
+  if (index >= 0 && index < galleryImages.length) {
+    lightboxImg.src = galleryImages[index].src;
+    lightboxImg.classList.remove('slide-left', 'slide-right');
+  }
 }
 
+// --- Close lightbox ---
 function closeLightbox() {
   lightbox.classList.remove('show');
-  document.body.style.overflow = ''; // Re-enable scroll
-  isLightboxOpen = false;
+  lightboxImg.src = '';
+  currentIndex = -1;
+  document.body.style.overflow = ''; // 🧱 Restore scrolling
 }
 
-function showImage(index, direction = null) {
-  if (index < 0) index = galleryImages.length - 1;
-  if (index >= galleryImages.length) index = 0;
-  const img = galleryImages[index];
-  if (!img) return;
-  lightboxImg.classList.remove('slide-left', 'slide-right');
-  void lightboxImg.offsetWidth; // Force reflow
-  if (direction === 'left') lightboxImg.classList.add('slide-left');
-  else if (direction === 'right') lightboxImg.classList.add('slide-right');
-  lightboxImg.src = img.src;
-  currentIndex = index;
-}
+// --- Arrows ---
+prevBtn.addEventListener('click', e => {
+  e.stopPropagation();
+  currentIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
+  lightboxImg.classList.add('slide-left');
+  showImage(currentIndex);
+  showArrowsTemporarily(true); // 🪄 show arrows on swipe
+});
 
-leftArrow.addEventListener('click', () => showImage(currentIndex - 1, 'right'));
-rightArrow.addEventListener('click', () => showImage(currentIndex + 1, 'left'));
+nextBtn.addEventListener('click', e => {
+  e.stopPropagation();
+  currentIndex = (currentIndex + 1) % galleryImages.length;
+  lightboxImg.classList.add('slide-right');
+  showImage(currentIndex);
+  showArrowsTemporarily(true); // 🪄 show arrows on swipe
+});
 
-// === Swipe Detection ===
-lightbox.addEventListener('touchstart', (e) => {
+// --- Keyboard ---
+document.addEventListener('keydown', e => {
+  if (!lightbox.classList.contains('show')) return;
+  if (e.key === 'ArrowLeft') prevBtn.click();
+  if (e.key === 'ArrowRight') nextBtn.click();
+  if (e.key === 'Escape') closeLightbox();
+});
+
+// --- Touch gestures (swipe left/right, swipe up to close) ---
+lightbox.addEventListener('touchstart', e => {
   startX = e.touches[0].clientX;
   startY = e.touches[0].clientY;
-}, { passive: true });
+});
 
-lightbox.addEventListener('touchmove', (e) => {
-  endX = e.touches[0].clientX;
-  endY = e.touches[0].clientY;
-}, { passive: true });
+lightbox.addEventListener('touchend', e => {
+  endX = e.changedTouches[0].clientX;
+  endY = e.changedTouches[0].clientY;
 
-lightbox.addEventListener('touchend', () => {
-  const diffX = endX - startX;
-  const diffY = endY - startY;
-  const absX = Math.abs(diffX);
-  const absY = Math.abs(diffY);
+  const deltaX = endX - startX;
+  const deltaY = endY - startY;
 
-  // Horizontal swipe for next/prev (momentum feel)
-  if (absX > 40 && absX > absY) {
-    if (diffX > 0) showImage(currentIndex - 1, 'right');
-    else showImage(currentIndex + 1, 'left');
+  if (Math.abs(deltaY) > 80 && deltaY < 0) {
+    closeLightbox(); // swipe up to close
+  } else if (Math.abs(deltaX) > 50) {
+    if (deltaX > 0) prevBtn.click(); // swipe right
+    else nextBtn.click(); // swipe left
   }
+});
 
-  // Vertical swipe to close
-  if (absY > 60 && absY > absX) {
+// ===== MOBILE ARROW FADE CONTROL =====
+function showArrowsTemporarily(instant = false) {
+  if (window.matchMedia("(hover: none) and (pointer: coarse)").matches) {
+    prevBtn.classList.add('visible');
+    nextBtn.classList.add('visible');
+    if (instant) {
+      prevBtn.style.transition = 'none';
+      nextBtn.style.transition = 'none';
+      requestAnimationFrame(() => {
+        prevBtn.style.transition = '';
+        nextBtn.style.transition = '';
+      });
+    }
+    clearTimeout(hideArrowsTimeout);
+    hideArrowsTimeout = setTimeout(() => {
+      prevBtn.classList.remove('visible');
+      nextBtn.classList.remove('visible');
+    }, 2000); // hide again after 2 seconds
+  }
+}
+
+// Show arrows when user taps or touches inside lightbox
+lightbox.addEventListener('touchstart', showArrowsTemporarily);
+lightbox.addEventListener('click', showArrowsTemporarily);
+
+// Close lightbox on desktop click (image or backdrop)
+lightbox.addEventListener('click', e => {
+  if (window.matchMedia("(hover: none) and (pointer: coarse)").matches) return; // mobile only tap
+  if (e.target === lightbox || e.target === lightboxImg) {
     closeLightbox();
   }
-
-  startX = startY = endX = endY = 0;
 });
