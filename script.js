@@ -3,6 +3,11 @@
 // ===== CARD DATA =====
 const cards = [
   { name: "Archeologists", color: "W", img: "cards/Archeologists.png" },
+  { name: "Reavow", color: "W", img: "cards/Reavow.png" },
+  { name: "Disavow", color: "M", img: "cards/Disavow.png" },
+  { name: "Ensoul", color: "B", img: "cards/Ensoul.png" },
+  { name: "Haunting Edict", color: "B", img: "cards/Haunting Edict.png" },
+  { name: "Biezels Plague", color: "B", img: "cards/Biezels Plague.png" },
   { name: "Force Mage", color: "U", img: "cards/Force Mage.png" },
   { name: "Flame Birth", color: "R", img: "cards/Flame_Birth.png" },
   { name: "Spirit Call", color: "G", img: "cards/Spirit Call.png" },
