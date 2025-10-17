@@ -8,6 +8,7 @@ const cards = [
   { name: "Ensoul", color: "B", img: "cards/Ensoul.png" },
   { name: "Haunting Edict", color: "B", img: "cards/Haunting Edict.png" },
   { name: "Biezels Plague", color: "B", img: "cards/Biezels Plague.png" },
+  { name: "Rite Of Reclamation", color: "G", img: "cards/Rite Of Reclamationalt.png" },
   { name: "Force Mage", color: "U", img: "cards/Force Mage.png" },
   { name: "Flame Birth", color: "R", img: "cards/Flame_Birth.png" },
   { name: "Spirit Call", color: "G", img: "cards/Spirit Call.png" },
@@ -17,7 +18,9 @@ const cards = [
   { name: "Brimstone", color: "M", img: "cards/Brimstone2.png" },
   { name: "Careful Looting", color: "M", img: "cards/Careful Looting.png" },
   { name: "Herbalists Relics", color: "A", img: "cards/Herbalists Relicsland.png" },
+  { name: "Forgotten Tower", color: "NB", img: "cards/Forgotten Tower.png" },
   { name: "Wooded Spire", color: "NB", img: "cards/Wooded Spire.png" },
+  { name: "Forest1", color: "BL", img: "cards/Forest.png" },
   // ... (add all remaining cards here)
 ];
 
