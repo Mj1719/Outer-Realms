@@ -20,6 +20,7 @@ const cards = [
   { name: "Leaf Turner", color: "G", img: "cards/Leaf Turner.png" },
   { name: "Leaping Baloth", color: "G", img: "cards/Leaping Baloth.png" },
   { name: "Brimstone", color: "M", img: "cards/Brimstone2.png" },
+  { name: "Bloodfire Witch", color: "M", img: "cards/Bloodfire Witch.png" },
   { name: "Careful Looting", color: "M", img: "cards/Careful Looting.png" },
   { name: "Thought Form", color: "M", img: "cards/Thought Form.png" },
   { name: "Herbalists Relics", color: "A", img: "cards/Herbalists Relicsland.png" },
