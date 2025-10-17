@@ -23,7 +23,7 @@ const cards = [
   { name: "Bloodfire Witch", color: "M", img: "cards/Bloodfire Witch.png" },
   { name: "Careful Looting", color: "M", img: "cards/Careful Looting.png" },
   { name: "Thought Form", color: "M", img: "cards/Thought Form.png" },
-  { name: "Justify", color: "M", img: "cards/Jutify.png" },
+  { name: "Justify", color: "M", img: "cards/Justify.png" },
   { name: "Noctivarius", color: "M", img: "cards/Noctivarius.png" },
   { name: "Serpents Grasp", color: "M", img: "cards/Serpents Grasp.png" },
   { name: "Herbalists Relics", color: "A", img: "cards/Herbalists Relicsland.png" },
