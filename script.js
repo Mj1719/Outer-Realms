@@ -13,6 +13,7 @@ const cards = [
   { name: "Ocean Mists", color: "U", img: "cards/Ocean Mists.png" },
   { name: "Flame Birth", color: "R", img: "cards/Flame_Birth.png" },
   { name: "Erupt", color: "R", img: "cards/Erupt.png" },
+  { name: "Geomancer", color: "R", img: "cards/Geomancer.png" },
   { name: "Lightning Orb", color: "R", img: "cards/Lightning Orb.png" },
   { name: "Spirit Call", color: "G", img: "cards/Spirit Call.png" },
   { name: "Kolani Beastmaster", color: "G", img: "cards/Kolani Beastmaster.png" },
