@@ -4,6 +4,7 @@
 const cards = [
   { name: "Archeologists", color: "W", img: "cards/Archeologists.png" },
   { name: "Reavow", color: "W", img: "cards/Reavow.png" },
+  { name: "Angel Form", color: "W", img: "cards/Angel Form.png" },
   { name: "Disavow", color: "M", img: "cards/Disavow.png" },
   { name: "Ensoul", color: "B", img: "cards/Ensoul.png" },
   { name: "Haunting Edict", color: "B", img: "cards/Haunting Edict.png" },
@@ -12,6 +13,8 @@ const cards = [
   { name: "Force Mage", color: "U", img: "cards/Force Mage.png" },
   { name: "Ocean Mists", color: "U", img: "cards/Ocean Mists.png" },
   { name: "Recirculate", color: "U", img: "cards/Recirculate.png" },
+  { name: "Spying Familiar", color: "U", img: "cards/Spying Familiar.png" },
+  { name: "Stormbound Spirit", color: "U", img: "cards/Stormbound Spirit.png" },
   { name: "Flame Birth", color: "R", img: "cards/Flame_Birth.png" },
   { name: "Erupt", color: "R", img: "cards/Erupt.png" },
   { name: "Geomancer", color: "R", img: "cards/Geomancer.png" },
