@@ -12,6 +12,7 @@ const cards = [
   { name: "Rite of Reclamation", color: "G", img: "cards/Rite of Reclamationalt.png" },
   { name: "Force Mage", color: "U", img: "cards/Force Mage.png" },
   { name: "Nautilus", color: "U", img: "cards/Nautilus.png" },
+  { name: "Runic Inscriptions", color: "U", img: "cards/Runic Inscriptions3.png" },
   { name: "Fathom Caster", color: "U", img: "cards/Fathom Caster.png" },
   { name: "Faeries Trick", color: "U", img: "cards/Faeries Trick.png" },
   { name: "Ocean Mists", color: "U", img: "cards/Ocean Mists.png" },
