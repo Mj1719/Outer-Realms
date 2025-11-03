@@ -20,6 +20,7 @@ const cards = [
   { name: "Spying Familiar", color: "U", img: "cards/Spying Familiar.png" },
   { name: "Stormbound Spirit", color: "U", img: "cards/Stormbound Spirit.png" },
   { name: "Flame Birth", color: "R", img: "cards/Flame_Birth.png" },
+  { name: "Vision of Fire", color: "R", img: "cards/Vision of Fire.png" },
   { name: "Erupt", color: "R", img: "cards/Erupt.png" },
   { name: "Geomancer", color: "R", img: "cards/Geomancer.png" },
   { name: "Lightning Orb", color: "R", img: "cards/Lightning Orb.png" },
