@@ -52,7 +52,11 @@ const cards = [
   { name: "Herbalists Relics", color: "A", img: "cards/Herbalists Relicsland.png" },
   { name: "Forgotten Tower", color: "A", img: "cards/Forgotten Tower.png" },
   { name: "Creation Lattice", color: "A", img: "cards/Creation Lattice.png" },
+  { name: "Ethereal Isle", color: "NB", img: "cards/Ethereal Isle.png" },
+  { name: "Isle of Night", color: "NB", img: "cards/Isle of Night.png" },
+  { name: "Brimstone Crag", color: "NB", img: "cards/Brimstone Crag.png" },
   { name: "Wooded Spire", color: "NB", img: "cards/Wooded Spire.png" },
+  { name: "Luminous Grove", color: "NB", img: "cards/Luminous Grove.png" },
   { name: "Forest1", color: "BL", img: "cards/Forest.png" },
   // ... (add all remaining cards here)
 ];
