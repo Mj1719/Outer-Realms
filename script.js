@@ -18,6 +18,7 @@ const cards = [
   { name: "Nautilus", color: "U", img: "cards/Nautilus.png" },
   { name: "Runic Inscriptions", color: "U", img: "cards/Runic Inscriptions3.png" },
   { name: "Fathom Caster", color: "U", img: "cards/Fathom Caster.png" },
+  { name: "Cryptic Writings", color: "U", img: "cards/Cryptic Writings.png" },
   { name: "Faeries Trick", color: "U", img: "cards/Faeries Trick.png" },
   { name: "Ocean Mists", color: "U", img: "cards/Ocean Mists.png" },
   { name: "Recirculate", color: "U", img: "cards/Recirculate.png" },
