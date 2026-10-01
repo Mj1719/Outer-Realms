@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Outer Realms — Spell Table</title>
+  <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:ital@0;1&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+  <link href="play.css" rel="stylesheet">
+</head>
+<body>
+<header class="table-header">
+  <a href="index.html">← Gallery</a><h1>Outer Realms</h1>
+  <div class="turn-controls"><span id="turn-label">Turn 1</span><span id="phase-label">Main</span><button id="advance">Pass / Next</button>
+      <button id="end-turn">End Turn</button><button id="reset">New Game</button></div>
+</header>
+<main class="spell-table">
+  <aside class="game-rail" aria-label="Game information">
+    <section class="player-info opponent-info"><div class="player-name">Opponent</div><div class="life"><span>Life</span><strong id="opp-life">20</strong></div><div class="mana-pool"><span>Mana</span><div id="opp-mana-pool" class="mana-symbols"></div></div><div class="rail-zones"><div class="zone small-zone"><span>Hand</span><b id="opp-hand-count">7</b></div><div class="zone small-zone library-zone"><span>Library</span><b id="opp-library-count">0</b></div><button class="zone small-zone graveyard-open" data-graveyard="opponentGraveyard"><span>Graveyard</span><b id="opp-graveyard-count">0</b></button><div class="zone small-zone"><span>Exile</span><b id="opp-exile-count">0</b></div></div></section>
+    <div class="rail-divider"></div>
+    <section class="player-info you-info"><div class="player-name">You</div><div class="life"><span>Life</span><strong id="life">20</strong></div><div class="mana-pool"><span>Mana</span><div id="mana-pool" class="mana-symbols"></div></div><div class="rail-zones"><div class="zone small-zone library-zone"><span>Library</span><b id="library-count">0</b></div><button class="zone small-zone graveyard-open" data-graveyard="graveyard"><span>Graveyard</span><b id="graveyard-count">0</b></button><div class="zone small-zone"><span>Exile</span><b id="exile-count">0</b></div></div></section>
+  </aside>
+  <section class="table-surface">
+    <section class="battle-row opponent-row lands-row" data-zone="opponentLands"><span class="row-label">Opponent Lands</span></section>
+    <section class="battle-row opponent-row permanents-row" data-zone="opponentPermanents"><span class="row-label">Opponent Permanents</span></section>
+    <div class="center-line"></div>
+    <section class="battle-row permanents-row drop-zone" data-zone="playerPermanents"><span class="row-label">Permanents</span></section>
+    <section class="battle-row lands-row drop-zone" data-zone="playerLands"><span class="row-label">Lands</span></section>
+    <section class="hand zone" data-zone="hand"><span class="zone-label">Hand <b id="hand-count">0</b></span><div id="hand-cards" class="hand-cards"></div></section>
+  </section>
+</main>
+<aside id="inspector" class="inspector" aria-live="polite">
+  <section id="stack-panel" class="stack-panel drop-zone" data-zone="stack"><div class="context-kicker">Stack</div><div id="stack-content" class="stack-empty">The stack is empty.</div></section>
+  <section id="graveyard-browser" class="graveyard-browser" hidden>
+    <div class="graveyard-browser-head"><div><div class="context-kicker">Graveyard</div><strong id="graveyard-browser-title">Player 1 Graveyard</strong></div><button id="close-graveyard">Close</button></div>
+    <div id="graveyard-browser-cards" class="graveyard-browser-cards"></div>
+  </section>
+  <section id="card-inspector"><div class="inspector-empty">Hover over a card to inspect it. When you move away, this panel returns to the stack.</div></section>
+  <section class="game-log"><div class="context-kicker">Narration</div><div id="decision-ui"></div><div id="game-log"></div></section>
+</aside>
+<script src="cards.js"></script><script src="play.js"></script>
+</body></html>

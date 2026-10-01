@@ -12,7 +12,7 @@
 <body>
   <header class="site-header">
     <h1>Outer Realms</h1>
-    <p class="subtitle">Custom Card Gallery — filter by color or type</p>
+    <p class="subtitle">Custom Card Gallery — filter or search the Outer Realms card database</p>
   </header>
 
   <nav class="filters" aria-label="Filter cards">
@@ -27,9 +27,14 @@
     <button data-filter="NB">Non-Basic Land</button>
     <button data-filter="BL">Basic Land</button>
   </nav>
+
+  <div class="gallery-tools">
+    <input id="card-search" type="search" placeholder="Search name, type, mechanic, rules text…" aria-label="Search cards">
+    <a class="play-link" href="play.html">Play Outer Realms</a>
+  </div>
   
   <main id="gallery" class="gallery" aria-live="polite">
-    <!-- Cards will be injected here by script.js using images.json -->
+    <!-- Cards are injected from the shared cards.js database. -->
   </main>
 
   <footer class="site-footer">
@@ -43,6 +48,7 @@
   <button id="next" class="nav-arrow right">❯</button>
 </div>
 
+<script src="cards.js"></script>
 <script src="script.js"></script>
 </body>
 </html>

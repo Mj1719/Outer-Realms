@@ -1,0 +1,287 @@
+// ===== OUTER REALMS GALLERY SCRIPT (Lazy Load + Lightbox + Pagination) =====
+
+// ===== CARD DATA =====
+const cards = [
+  { name: "Archeologists", color: "W", img: "cards/Archeologists.png" },
+  { name: "Reavow", color: "W", img: "cards/Reavow.png" },
+  { name: "Angel Form", color: "W", img: "cards/Angel Form.png" },
+  { name: "Disavow", color: "W", img: "cards/Disavow.png" },
+  { name: "Soul Weaver", color: "W", img: "cards/soul weaver.png" },
+  { name: "Radiant Emergence", color: "W", img: "cards/Radiant Emergence2.png" },
+  { name: "Atral Prison", color: "W", img: "cards/astral prison3.png" },
+  { name: "Ambush Squad", color: "W", img: "cards/Ambush Squad.png" },
+  { name: "Exorcize", color: "W", img: "cards/Exorcize.png" },
+  { name: "Daybreak", color: "W", img: "cards/Daybreak.png" },
+//Black
+  { name: "Ensoul", color: "B", img: "cards/Ensoul.png" },
+  { name: "Divide Spirit and Flesh", color: "B", img: "cards/Divide Spirit and Flesh.png" },
+  { name: "Haunting Edict", color: "B", img: "cards/Haunting Edict.png" },
+  { name: "Ray of Disintegration", color: "B", img: "cards/Ray of Disintegration.png" },
+  { name: "Sacraficial Beast", color: "B", img: "cards/Sacraficial Beast.png" },
+  { name: "Astral Possession", color: "B", img: "cards/astral possession.png" },
+  { name: "Biezels Plague", color: "B", img: "cards/Biezels Plague.png" },
+  { name: "Crypt Breaker", color: "B", img: "cards/Crypt Breaker.png" },
+  { name: "Restless Earth", color: "B", img: "cards/Restless Earth.png" },
+  { name: "Nethervoid Sorceress", color: "B", img: "cards/nethervoid sorceress.png" },
+  { name: "Desecrate", color: "B", img: "cards/Desecrate.png" },
+//Blue
+  { name: "Rite of Reclamation", color: "G", img: "cards/Rite of Reclamationalt.png" },
+  { name: "Force Mage", color: "U", img: "cards/Force Mage.png" },
+  { name: "Nautilus", color: "U", img: "cards/Nautilus.png" },
+  { name: "Runic Inscriptions", color: "U", img: "cards/Runic Inscriptions3.png" },
+  { name: "Fathom Caster", color: "U", img: "cards/Fathom Caster.png" },
+  { name: "Cryptic Writings", color: "U", img: "cards/Cryptic Writings.png" },
+  { name: "Faeries Trick", color: "U", img: "cards/Faeries Trick.png" },
+  { name: "Ocean Mists", color: "U", img: "cards/Ocean Mists.png" },
+  { name: "Recirculate", color: "U", img: "cards/Recirculate.png" },
+  { name: "Spying Familiar", color: "U", img: "cards/Spying Familiar.png" },
+  { name: "Stormbound Spirit", color: "U", img: "cards/Stormbound Spirit.png" },
+  { name: "Flame Birth", color: "R", img: "cards/Flame_Birth.png" },
+  { name: "Vision of Fire", color: "R", img: "cards/Vision of Fire.png" },
+  { name: "Erupt", color: "R", img: "cards/Erupt.png" },
+  { name: "Geomancer", color: "R", img: "cards/Geomancer.png" },
+  { name: "Lightning Orb", color: "R", img: "cards/Lightning Orb.png" },
+  { name: "Earth Baron", color: "R", img: "cards/Earth Baron.png" },
+  { name: "Spirit Call", color: "G", img: "cards/Spirit Call.png" },
+  { name: "Woodform", color: "G", img: "cards/Woodform.png" },
+  { name: "Earthbound Satyr", color: "G", img: "cards/Earthbound Satyr.png" },
+  { name: "Evogenesis", color: "G", img: "cards/Evogenesis.png" },
+  { name: "Earten Elemental", color: "G", img: "cards/Earthen Elemental.png" },
+  { name: "Kolani Beastmaster", color: "G", img: "cards/Kolani Beastmaster.png" },
+  { name: "Leaf Turner", color: "G", img: "cards/Leaf Turner.png" },
+  { name: "Chameleon", color: "G", img: "cards/Chameleon.png" },
+  { name: "Rootbound Dryads", color: "G", img: "cards/Rootbound Dryads.png" },
+  { name: "Crown of Leaves", color: "G", img: "cards/Crown of Leaves.png" },
+  { name: "Leaping Baloth", color: "G", img: "cards/Leaping Baloth.png" },
+  { name: "Wolf Form", color: "G", img: "cards/Wolf Form.png" },
+  { name: "Vision of Gaea", color: "G", img: "cards/Vision of Gaea.png" },
+  { name: "Valcos Beast", color: "G", img: "cards/Valcos Beast.png" },
+  { name: "Ygsoui Steed", color: "G", img: "cards/Ygsoui Steed.png" },
+//Multicolor
+  { name: "Brimstone", color: "M", img: "cards/Brimstone.png" },
+  { name: "Aethersplice", color: "M", img: "cards/Aethersplice.png" },
+  { name: "Bloodfire Witch", color: "M", img: "cards/Bloodfire Witch.png" },
+  { name: "Arcane Conjurer", color: "M", img: "cards/arcane conjurer.png" },
+  { name: "Bloon Giver", color: "M", img: "cards/Boon Giver.png" },
+  { name: "Fireborn Sirens", color: "M", img: "cards/Fireborn Sirens.png" },
+  { name: "Careful Looting", color: "M", img: "cards/Careful Looting.png" },
+  { name: "Thought Form", color: "M", img: "cards/Thought Form.png" },
+  { name: "Ghastform", color: "M", img: "cards/Ghastform.png" },
+  { name: "Justify", color: "M", img: "cards/Justify.png" },
+  { name: "Noctivarius", color: "M", img: "cards/Noctivarius.png" },
+  { name: "Serpents Grasp", color: "M", img: "cards/Serpents Grasp.png" },
+  { name: "Shadow of Nahaz", color: "M", img: "cards/shadow of nahaz1.png" },
+  { name: "Windform", color: "M", img: "cards/Windform.png" },
+  { name: "Animize", color: "M", img: "cards/Animize.png" },
+  { name: "Crypt Stalker", color: "M", img: "cards/crypt stalker.png" },
+  { name: "Spiritguide Shaman", color: "M", img: "cards/Spiritguide Shaman.png" },
+  { name: "Valorform", color: "M", img: "cards/valorform.png" },
+  { name: "Avaragos the Abyss", color: "M", img: "cards/avaragos the abyss.png" },
+  { name: "Cloudburst", color: "M", img: "cards/cloudburst.png" },
+  { name: "Shaper's Chant", color: "M", img: "cards/shapers chant.png" },
+  { name: "Ghost-Blade Adept", color: "M", img: "cards/Ghost-Blade Adept.png" },
+  { name: "Biezel's Masque", color: "M", img: "cards/biezels masque.png" },
+  { name: "Mystify", color: "M", img: "cards/mystify.png" },
+  { name: "Maddening Whispers", color: "M", img: "cards/maddening whispers.png" },
+  { name: "Dread Chant", color: "M", img: "cards/dread chant.png" },
+  { name: "Empower", color: "M", img: "cards/Empower.png" },
+  { name: "Glorious Emergence", color: "M", img: "cards/glorious emergence2.png" },
+  { name: "Alezhar Sorcerer", color: "M", img: "cards/alezhar sorcerer.png" },
+  { name: "Aravel Soul Hunter", color: "M", img: "cards/Aravel Soul Hunter.png" },
+  { name: "Al-Fazol", color: "M", img: "cards/al-fazol2.png" },
+  { name: "Thaltar Vilewind", color: "M", img: "cards/thaltar vilewind2.png" },
+// Artifacts
+  { name: "Herbalists Relics", color: "A", img: "cards/Herbalists Relicsland.png" },
+  { name: "Forgotten Tower", color: "A", img: "cards/Forgotten Tower.png" },
+  { name: "Creation Lattice", color: "A", img: "cards/Creation Lattice.png" },
+  { name: "Ethereal Isle", color: "NB", img: "cards/Ethereal Isle.png" },
+  { name: "Isle of Night", color: "NB", img: "cards/Isle of Night.png" },
+  { name: "Brimstone Crag", color: "NB", img: "cards/Brimstone Crag.png" },
+  { name: "Wooded Spire", color: "NB", img: "cards/Wooded Spire.png" },
+  { name: "Luminous Grove", color: "NB", img: "cards/Luminous Grove.png" },
+  { name: "Forest1", color: "BL", img: "cards/Forest.png" },
+  // ... (add all remaining cards here)
+];
+
+// ===== GLOBAL ELEMENTS =====
+const gallery = document.getElementById("gallery");
+const filterButtons = document.querySelectorAll(".filters button");
+
+const colorMap = {
+  W: "White",
+  U: "Blue",
+  B: "Black",
+  R: "Red",
+  G: "Green",
+  M: "Multicolor",
+  A: "Artifact",
+  NB: "Non-Basic Land",
+  BL: "Basic Land"
+};
+
+// ===== PAGINATION SETTINGS =====
+let currentPage = 1;
+const cardsPerPage = 80;
+let currentFilter = "all";
+let galleryImages = [];
+
+// ===== GALLERY DISPLAY =====
+function displayCards(filteredCards, reset = true) {
+  if (reset) gallery.innerHTML = "";
+
+  const start = (currentPage - 1) * cardsPerPage;
+  const end = start + cardsPerPage;
+  const visibleCards = filteredCards.slice(0, end);
+
+  visibleCards.forEach(card => {
+    const img = document.createElement("img");
+    img.src = card.img;
+    img.alt = card.name;
+    img.title = card.name;
+    img.classList.add("card");
+    img.loading = "lazy";
+    gallery.appendChild(img);
+  });
+
+  galleryImages = Array.from(document.querySelectorAll('.card'));
+}
+
+// ===== FILTER BUTTONS =====
+filterButtons.forEach(button => {
+  button.addEventListener("click", () => {
+    filterButtons.forEach(b => b.classList.remove("active"));
+    button.classList.add("active");
+
+    currentFilter = button.dataset.filter;
+    currentPage = 1;
+
+    const filtered = (currentFilter === "all")
+      ? cards
+      : cards.filter(card => card.color === currentFilter || colorMap[card.color] === currentFilter);
+
+    displayCards(filtered);
+  });
+});
+
+// ===== LOAD MORE BUTTON (AUTO) =====
+window.addEventListener("scroll", () => {
+  if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 200) {
+    const filtered = (currentFilter === "all")
+      ? cards
+      : cards.filter(card => card.color === currentFilter || colorMap[card.color] === currentFilter);
+
+    if ((currentPage * cardsPerPage) < filtered.length) {
+      currentPage++;
+      displayCards(filtered, false);
+    }
+  }
+});
+
+// ===== INITIAL DISPLAY =====
+displayCards(cards);
+
+// ===== LIGHTBOX =====
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightbox-img');
+const prevBtn = document.getElementById('prev');
+const nextBtn = document.getElementById('next');
+
+let currentIndex = -1;
+let startX = 0;
+let startY = 0;
+let endX = 0;
+let endY = 0;
+
+// --- Tap to open (requires click-release) ---
+document.addEventListener('click', e => {
+  const clickedImg = e.target.closest('.card');
+  if (clickedImg) {
+    e.preventDefault();
+    galleryImages = Array.from(document.querySelectorAll('.card'));
+    currentIndex = galleryImages.indexOf(clickedImg);
+    showImage(currentIndex);
+    lightbox.classList.add('show');
+  }
+});
+
+// --- Show image with smooth animation ---
+function showImage(index, direction = null) {
+  if (index < 0 || index >= galleryImages.length) return;
+
+  const img = lightboxImg;
+  img.classList.remove('slide-left', 'slide-right');
+
+  // Trigger reflow so animation restarts
+  void img.offsetWidth;
+
+  img.src = galleryImages[index].src;
+
+  // Apply animation direction if provided
+  if (direction === 'left') img.classList.add('slide-left');
+  else if (direction === 'right') img.classList.add('slide-right');
+}
+
+// --- Close lightbox ---
+function closeLightbox() {
+  lightbox.classList.remove('show');
+  lightboxImg.src = '';
+  currentIndex = -1;
+}
+
+// --- Close on click (desktop) ---
+lightbox.addEventListener('click', e => {
+  // Close only if user clicked background or the image itself
+  if (e.target === lightbox || e.target === lightboxImg) {
+    closeLightbox();
+  }
+});
+
+// --- Arrows ---
+prevBtn.addEventListener('click', e => {
+  e.stopPropagation();
+  currentIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
+  showImage(currentIndex, 'right');
+});
+
+nextBtn.addEventListener('click', e => {
+  e.stopPropagation();
+  currentIndex = (currentIndex + 1) % galleryImages.length;
+  showImage(currentIndex, 'left');
+});
+
+// --- Keyboard navigation ---
+document.addEventListener('keydown', e => {
+  if (!lightbox.classList.contains('show')) return;
+  if (e.key === 'ArrowLeft') prevBtn.click();
+  if (e.key === 'ArrowRight') nextBtn.click();
+  if (e.key === 'Escape') closeLightbox();
+});
+
+// --- Touch gestures (swipe left/right or up to close) ---
+lightbox.addEventListener('touchstart', e => {
+  startX = e.touches[0].clientX;
+  startY = e.touches[0].clientY;
+});
+
+lightbox.addEventListener('touchend', e => {
+  endX = e.changedTouches[0].clientX;
+  endY = e.changedTouches[0].clientY;
+
+  const deltaX = endX - startX;
+  const deltaY = endY - startY;
+
+  // Swipe up to close
+  if (Math.abs(deltaY) > 80 && deltaY < 0) {
+    closeLightbox();
+  }
+  // Swipe left/right to navigate
+  else if (Math.abs(deltaX) > 50 && Math.abs(deltaY) < 60) {
+    if (deltaX > 0) {
+      currentIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
+      showImage(currentIndex, 'right');
+    } else {
+      currentIndex = (currentIndex + 1) % galleryImages.length;
+      showImage(currentIndex, 'left');
+    }
+  }
+});

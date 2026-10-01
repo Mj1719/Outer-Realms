@@ -212,3 +212,38 @@ body{
     background: rgba(0, 0, 0, 0.6);
   }
 }
+
+/* ===== Shared database search / play entry ===== */
+.gallery-tools {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 16px 2px;
+  max-width: 760px;
+  margin: 0 auto;
+}
+#card-search {
+  flex: 1;
+  min-width: 0;
+  background: rgba(0,0,0,.25);
+  color: var(--ink);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 6px;
+  padding: 10px 12px;
+  font: inherit;
+}
+#card-search::placeholder { color: var(--muted); }
+.play-link {
+  color: var(--ink);
+  text-decoration: none;
+  border: 1px solid rgba(182,123,75,.35);
+  background: rgba(182,123,75,.12);
+  border-radius: 6px;
+  padding: 10px 14px;
+  white-space: nowrap;
+}
+@media (max-width: 560px) {
+  .gallery-tools { flex-direction: column; align-items: stretch; }
+  .play-link { text-align: center; }
+}
